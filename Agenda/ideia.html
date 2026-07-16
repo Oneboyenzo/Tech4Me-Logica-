@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Nomes</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-hover: #45a049;
+            --bg: #f4f7f6;
+            --card: #ffffff;
+            --text: #333333;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 { margin-top: 0; }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover { background-color: var(--primary-hover); }
+        
+        button.listar { background-color: #2196F3; }
+        button.listar:hover { background-color: #0b7dda; }
+
+        .resultado-box {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            min-height: 40px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Cadastro de Nomes</h2>
+    
+    <div class="input-group">
+        <label for="nomeInput">Digite um nome:</label>
+        <input type="text" id="nomeInput" placeholder="Ex: João Silva">
+    </div>
+    <button onclick="adicionarNome()">Adicionar Nome</button>
+
+    <div class="input-group">
+        <button class="listar" onclick="listarNomes()">Listar Todos</button>
+    </div>
+
+    <div class="input-group">
+        <label for="buscaInput">Buscar nome:</label>
+        <input type="text" id="buscaInput" placeholder="Nome para pesquisar">
+    </div>
+    <button onclick="buscarNome()">Buscar</button>
+
+    <div class="resultado-box" id="resultadoArea">Nenhum resultado.</div>
+</div>
+
+<script>
+    let nomes = [];
+
+    function adicionarNome() {
+        const input = document.getElementById('nomeInput');
+        const nome = input.value.trim();
+
+        if (nome === '') {
+            alert('Por favor, digite um nome válido!');
+            return;
+        }
+
+        nomes.push(nome);
+        input.value = '';
+        document.getElementById('resultadoArea').innerHTML = `Nome <strong>${nome}</strong> adicionado com sucesso!`;
+    }
+
+    function listarNomes() {
+        const area = document.getElementById('resultadoArea');
+        
+        if (nomes.length === 0) {
+            area.innerHTML = 'Nenhum nome cadastrado.';
+            return;
+        }
+
+        let listaHTML = '<ul>';
+        nomes.forEach(nome => {
+            listaHTML += `<li>${nome}</li>`;
+        });
+        listaHTML += '</ul>';
+
+        area.innerHTML = listaHTML;
+    }
+
+    function buscarNome() {
+        const input = document.getElementById('buscaInput');
+        const nomeBusca = input.value.trim().toLowerCase();
+        const area = document.getElementById('resultadoArea');
+
+        if (nomeBusca === '') {
+            alert('Digite um nome para buscar.');
+            return;
+        }
+
+        const encontrado = nomes.some(nome => nome.toLowerCase() === nomeBusca);
+
+        if (encontrado) {
+            area.innerHTML = `✅ O nome <strong>"${input.value.trim()}"</strong> foi ENCONTRADO na lista.`;
+        } else {
+            area.innerHTML = `❌ O nome <strong>"${input.value.trim()}"</strong> NÃO foi encontrado.`;
+        }
+        
+        input.value = '';
+    }
+</script>
+
+</body>
+</html>
